@@ -79,8 +79,6 @@ api/
 
 **Fluxo:** `HTTP Request → Routes → Services → Repositories → Models → Database`
 
-Veja [REFACTORING_ARQUITETURA.md](./REFACTORING_ARQUITETURA.md) para detalhes técnicos.
-
 ## Estrutura do Banco de Dados
 
 ### Tabela: medicamento
