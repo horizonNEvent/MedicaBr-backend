@@ -25,6 +25,15 @@ class MedicamentoRepository:
         return Medicamento.query.filter_by(nome=nome).first()
 
     @staticmethod
+    def buscar_por_nome_like(nome):
+        """Busca medicamentos por nome com LIKE (case-insensitive)"""
+        if not nome or nome.strip() == '':
+            return Medicamento.query.all()
+        return Medicamento.query.filter(
+            Medicamento.nome.ilike(f'%{nome}%')
+        ).all()
+
+    @staticmethod
     def buscar_por_id(medicamento_id):
         """Busca medicamento por ID"""
         return Medicamento.query.get(medicamento_id)
@@ -35,11 +44,16 @@ class MedicamentoRepository:
         return Medicamento.query.all()
 
     @staticmethod
-    def listar_com_alerta():
-        """Retorna medicamentos com estoque baixo"""
-        return Medicamento.query.filter(
+    def listar_com_alerta(nome=None):
+        """Retorna medicamentos com estoque baixo, opcionalmente filtrados por nome"""
+        query = Medicamento.query.filter(
             Medicamento.estoque_atual <= Medicamento.estoque_minimo
-        ).all()
+        )
+
+        if nome and nome.strip() != '':
+            query = query.filter(Medicamento.nome.ilike(f'%{nome}%'))
+
+        return query.all()
 
     @staticmethod
     def deletar(medicamento):

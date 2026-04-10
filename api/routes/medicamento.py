@@ -1,4 +1,5 @@
 from flask_openapi3 import OpenAPI
+from flask import request
 from schemas import (
     MedicamentoCreate, MedicamentoResponse, MedicamentoListResponse,
     RegistroUsoCreate, RegistroUsoResponse, RegistroUsoListResponse,
@@ -34,9 +35,15 @@ def registrar_rotas_medicamento(app: OpenAPI):
 
     @app.get('/medicamentos', summary='Listar medicamentos')
     def listar_medicamentos():
-        """Lista todos os medicamentos cadastrados"""
+        """Lista todos os medicamentos cadastrados ou filtra por nome"""
         try:
-            medicamentos = MedicamentoService.listar_todos()
+            nome_filtro = request.args.get('nome', default=None)
+
+            if nome_filtro:
+                medicamentos = MedicamentoService.listar_com_filtro(nome_filtro)
+            else:
+                medicamentos = MedicamentoService.listar_todos()
+
             return {
                 'total': len(medicamentos),
                 'medicamentos': [med.to_dict() for med in medicamentos],
@@ -96,9 +103,10 @@ def registrar_rotas_medicamento(app: OpenAPI):
 
     @app.get('/medicamentos/alertas', summary='Medicamentos com alerta de estoque')
     def medicamentos_com_alerta():
-        """Lista medicamentos com estoque baixo (abaixo do mínimo)"""
+        """Lista medicamentos com estoque baixo (abaixo do mínimo), opcionalmente filtrado por nome"""
         try:
-            medicamentos = MedicamentoService.listar_com_alertas()
+            nome_filtro = request.args.get('nome', default=None)
+            medicamentos = MedicamentoService.listar_com_alertas(nome_filtro)
             em_alerta = [
                 {**med.to_dict(), 'em_alerta': True}
                 for med in medicamentos

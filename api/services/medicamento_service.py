@@ -47,6 +47,13 @@ class MedicamentoService:
         return medicamentos
 
     @staticmethod
+    def listar_com_filtro(nome=None):
+        """Retorna medicamentos filtrados por nome"""
+        medicamentos = MedicamentoRepository.buscar_por_nome_like(nome)
+        logger.info(f'Listando {len(medicamentos)} medicamentos com filtro: {nome or "nenhum"}')
+        return medicamentos
+
+    @staticmethod
     def buscar_por_id(medicamento_id):
         """Busca medicamento por ID"""
         medicamento = MedicamentoRepository.buscar_por_id(medicamento_id)
@@ -74,10 +81,10 @@ class MedicamentoService:
         return nome
 
     @staticmethod
-    def listar_com_alertas():
-        """Retorna medicamentos com estoque baixo"""
-        medicamentos = MedicamentoRepository.listar_com_alerta()
-        logger.info(f'{len(medicamentos)} medicamentos em alerta de estoque')
+    def listar_com_alertas(nome=None):
+        """Retorna medicamentos com estoque baixo, opcionalmente filtrados por nome"""
+        medicamentos = MedicamentoRepository.listar_com_alerta(nome)
+        logger.info(f'{len(medicamentos)} medicamentos em alerta de estoque com filtro: {nome or "nenhum"}')
         return medicamentos
 
     @staticmethod
