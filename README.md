@@ -10,7 +10,13 @@ API RESTful para gerenciar medicamentos pessoais. Permite cadastrar medicamentos
 
 ### Passo a passo
 
-1. **Crie um ambiente virtual (recomendado)**
+1. **Clone o repositório**
+```bash
+git clone https://github.com/horizonNEvent/MedicaBr-backend.git
+cd MedicaBr-backend
+```
+
+2. **Crie um ambiente virtual (recomendado)**
 ```bash
 # Windows
 python -m venv venv
@@ -21,7 +27,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-2. **Instale as dependências**
+3. **Instale as dependências**
 ```bash
 pip install -r api/requirements.txt
 ```
