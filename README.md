@@ -54,9 +54,11 @@ http://localhost:5000/docs
 ### Medicamentos
 - `POST /medicamento` - Cadastrar medicamento
 - `GET /medicamentos` - Listar todos os medicamentos
+  - Parâmetro opcional: `?nome=dipirona` - Filtra por nome (case-insensitive)
 - `GET /medicamento/<id>` - Buscar medicamento por ID
 - `DELETE /medicamento/<id>` - Deletar medicamento
 - `GET /medicamentos/alertas` - Listar medicamentos com estoque baixo
+  - Parâmetro opcional: `?nome=dipirona` - Filtra por nome (case-insensitive)
 
 ### Registros de Uso
 - `POST /registro_uso` - Registrar que tomou o medicamento
@@ -123,6 +125,24 @@ curl -X POST http://localhost:5000/medicamento \
     "estoque_minimo": 5,
     "data_validade": "2025-12-31"
   }'
+```
+
+### Listar medicamentos com filtro
+```bash
+# Todos os medicamentos
+curl http://localhost:5000/medicamentos
+
+# Filtrar por nome
+curl http://localhost:5000/medicamentos?nome=dipirona
+```
+
+### Listar alertas com filtro
+```bash
+# Todos os medicamentos em alerta
+curl http://localhost:5000/medicamentos/alertas
+
+# Filtrar alertas por nome
+curl http://localhost:5000/medicamentos/alertas?nome=para
 ```
 
 ### Registrar uso
