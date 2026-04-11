@@ -1,4 +1,4 @@
-from flask import render_template_string
+from flask import render_template_string, redirect
 from flask_openapi3 import OpenAPI
 from flask_cors import CORS
 from database import db, init_db
@@ -17,26 +17,10 @@ registrar_rotas_medicamento(app)
 registrar_rotas_registro_uso(app)
 
 
-@app.get('/', summary='Health Check')
-def health_check():
-    """Verifica se a API está funcionando"""
-    return {
-        'status': 'API MediLembr rodando',
-        'version': '1.0.0',
-        'endpoints': {
-            'Medicamentos': {
-                'POST /medicamento': 'Criar medicamento',
-                'GET /medicamentos': 'Listar todos',
-                'GET /medicamento/<id>': 'Buscar por ID',
-                'DELETE /medicamento/<id>': 'Deletar',
-                'GET /medicamentos/alertas': 'Listar com alerta'
-            },
-            'Registros': {
-                'POST /registro_uso': 'Registrar uso',
-                'GET /historico': 'Ver histórico'
-            }
-        }
-    }, 200
+@app.get('/', summary='Redirecionamento para Documentação')
+def root():
+    """Redireciona para a página de documentação padrão"""
+    return redirect('/docs')
 
 
 @app.errorhandler(404)
@@ -63,7 +47,7 @@ def swagger_docs():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>MediLembr API - Swagger</title>
+        <title>MedicaBr API - Swagger</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css">
@@ -103,7 +87,7 @@ def docs_hub():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>MediLembr API - Documentação</title>
+        <title>MedicaBr API - Documentação</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
@@ -164,7 +148,7 @@ def docs_hub():
     </head>
     <body>
         <div class="container">
-            <h1>MediLembr API</h1>
+            <h1>MedicaBr API</h1>
             <p class="subtitle">Escolha uma forma de acessar a documentação</p>
 
             <div class="docs-grid">
@@ -183,10 +167,7 @@ def docs_hub():
                     <p>Especificação OpenAPI em formato JSON. Para ferramentas e integrações.</p>
                 </a>
 
-                <a href="/" class="doc-card">
-                    <h3>Endpoints JSON</h3>
-                    <p>Lista simples de todos os endpoints disponíveis em formato JSON.</p>
-                </a>
+
             </div>
         </div>
     </body>
@@ -201,7 +182,7 @@ def redoc_docs():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>MediLembr API - ReDoc</title>
+        <title>MedicaBr API - ReDoc</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
@@ -223,7 +204,7 @@ def openapi_spec():
     spec = {
         "openapi": "3.0.0",
         "info": {
-            "title": "MediLembr API",
+            "title": "MedicaBr API",
             "description": "API RESTful para gerenciar medicamentos pessoais",
             "version": "1.0.0"
         },
@@ -307,5 +288,5 @@ def openapi_spec():
 
 
 if __name__ == '__main__':
-    logger.info('Iniciando MediLembr API...')
+    logger.info('Iniciando MedicaBr API...')
     app.run(debug=True, host='localhost', port=5000)
